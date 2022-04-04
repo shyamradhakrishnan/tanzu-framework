@@ -605,7 +605,8 @@ ANTREA_TRACEFLOW: true
 ANTREA_EGRESS: false
 ANTREA_FLOWEXPORTER: false
 ANTREA_DISABLE_UDP_TUNNEL_OFFLOAD: false
-
+#! sets the value of MTU, used by both Antrea and Calico
+DEFAULT_MTU:
 
 #! ---------------------------------------------------------------------
 #! Internal configuration, not meant to be overridden

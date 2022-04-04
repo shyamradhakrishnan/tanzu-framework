@@ -129,7 +129,7 @@ ANTREA_TRACEFLOW: "false", "true"
 ANTREA_EGRESS: "false", "true"
 ANTREA_FLOWEXPORTER: "false", "true"
 ANTREA_DISABLE_UDP_TUNNEL_OFFLOAD: "false", "true"
-
+DEFAULT_MTU: "1500", 1500
 
 BUILD_EDITION: "tkg", "tce"
 
