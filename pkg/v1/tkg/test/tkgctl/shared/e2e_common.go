@@ -26,6 +26,7 @@ type E2ECommonSpecInput struct {
 	ArtifactsFolder string
 	Cni             string
 	Plan            string
+	OtherConfigs    map[string]string
 }
 
 func E2ECommonSpec(context context.Context, inputGetter func() E2ECommonSpecInput) { //nolint:funlen
@@ -60,11 +61,13 @@ func E2ECommonSpec(context context.Context, inputGetter func() E2ECommonSpecInpu
 	It("Should verify basic cluster lifecycle operations", func() {
 		By(fmt.Sprintf("Generating workload cluster configuration for cluster %q", clusterName))
 		options := framework.CreateClusterOptions{
-			ClusterName: clusterName,
-			Namespace:   namespace,
-			Plan:        "dev",
-			CniType:     input.Cni,
+			ClusterName:  clusterName,
+			Namespace:    namespace,
+			Plan:         "dev",
+			CniType:      input.Cni,
+			OtherConfigs: input.OtherConfigs,
 		}
+
 		if input.Plan != "" {
 			options.Plan = input.Plan
 		}
@@ -94,10 +97,11 @@ func E2ECommonSpec(context context.Context, inputGetter func() E2ECommonSpecInpu
 		By(fmt.Sprintf("Creating a workload cluster %q", clusterName))
 
 		options = framework.CreateClusterOptions{
-			ClusterName: clusterName,
-			Namespace:   namespace,
-			Plan:        "dev",
-			CniType:     input.Cni,
+			ClusterName:  clusterName,
+			Namespace:    namespace,
+			Plan:         "dev",
+			CniType:      input.Cni,
+			OtherConfigs: input.OtherConfigs,
 		}
 		if input.Plan != "" {
 			options.Plan = input.Plan

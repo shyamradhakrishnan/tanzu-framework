@@ -15,8 +15,14 @@ if [ -z "$AWS_ACCESS_KEY_ID" ]; then
   exit 0
 fi
 
+# This step makes sure that the filter applied is never empty
+if [ -z "$FILTER" ]; then
+  echo "filter for leftovers is not set"
+  exit 1
+fi
+
 wget https://github.com/genevieve/leftovers/releases/download/v0.62.0/leftovers-v0.62.0-linux-amd64
 mv leftovers-v0.62.0-linux-amd64 /usr/local/bin/leftovers
 chmod +x /usr/local/bin/leftovers
 
-leftovers -i aws --aws-access-key-id="${AWS_ACCESS_KEY_ID}" --aws-secret-access-key="${AWS_SECRET_ACCESS_KEY}" --aws-session-token="${AWS_SESSION_TOKEN}" --filter="${FILTER}" --aws-region="${AWS_REGION}" -n
+leftovers -i aws --aws-access-key-id="${AWS_ACCESS_KEY_ID}" --aws-secret-access-key="${AWS_SECRET_ACCESS_KEY}" --aws-session-token="${AWS_SESSION_TOKEN}" --filter="${FILTER}" --aws-region="${AWS_REGION}" --dry-run
