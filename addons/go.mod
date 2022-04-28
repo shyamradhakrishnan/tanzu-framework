@@ -11,7 +11,6 @@ replace (
 
 require (
 	github.com/go-logr/logr v1.2.2
-	github.com/google/go-containerregistry v0.7.0
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.19.0
 	github.com/pkg/errors v0.9.1
@@ -19,11 +18,13 @@ require (
 	github.com/vmware-tanzu/carvel-secretgen-controller v0.5.0
 	github.com/vmware-tanzu/carvel-vendir v0.26.0
 	github.com/vmware-tanzu/tanzu-framework v0.9.0
+	github.com/vmware-tanzu/tanzu-framework/apis/cni v0.0.0-00010101000000-000000000000
+	github.com/vmware-tanzu/tanzu-framework/apis/cpi v0.0.0-00010101000000-000000000000
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	k8s.io/api v0.23.4
 	k8s.io/apiextensions-apiserver v0.23.4
-	k8s.io/apimachinery v0.23.4
+	k8s.io/apimachinery v0.23.6
 	k8s.io/client-go v0.23.4
 	k8s.io/klog/v2 v2.40.1
 	k8s.io/utils v0.0.0-20220210201930-3a6ce19ff2f9
@@ -75,8 +76,6 @@ require (
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/vmware-tanzu/tanzu-framework/apis/cni v0.0.0-00010101000000-000000000000 // indirect
-	github.com/vmware-tanzu/tanzu-framework/apis/cpi v0.0.0-00010101000000-000000000000 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.19.1 // indirect
@@ -90,6 +89,7 @@ require (
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	k8s.io/cluster-bootstrap v0.23.4 // indirect
