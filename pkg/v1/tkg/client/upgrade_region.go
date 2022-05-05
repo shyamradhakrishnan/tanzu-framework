@@ -174,6 +174,7 @@ func (c *TkgClient) validateAndconfigure(options *UpgradeClusterOptions, regiona
 }
 
 func (c *TkgClient) configureVariablesForProvidersInstallation(regionalClusterClient clusterclient.Client) error {
+	log.Infof("In configure variables for providers installation")
 	err := c.configureImageTagsForProviderInstallation()
 	if err != nil {
 		return errors.Wrap(err, "failed to configure image tags for provider installation")
@@ -211,6 +212,10 @@ func (c *TkgClient) configureVariablesForProvidersInstallation(regionalClusterCl
 		}
 	case VSphereProviderName:
 		if err := c.configureVsphereCredentialsFromCluster(regionalClusterClient); err != nil {
+			return errors.Wrap(err, "failed to configure Vsphere credentials")
+		}
+	case OCIProviderName:
+		if err := c.configureOCICredentialsFromCluster(regionalClusterClient); err != nil {
 			return errors.Wrap(err, "failed to configure Vsphere credentials")
 		}
 	case DockerProviderName:

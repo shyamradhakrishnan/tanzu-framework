@@ -11,10 +11,10 @@ load("@ytt:yaml", "yaml")
 def config_variable_association():
 
 return {
-"CLUSTER_NAME": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker"],
-"CLUSTER_PLAN": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker"],
-"NAMESPACE": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker"],
-"INFRASTRUCTURE_PROVIDER": ["vsphere", "aws", "azure", "docker"],
+"CLUSTER_NAME": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker", "oci"],
+"CLUSTER_PLAN": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker", "oci"],
+"NAMESPACE": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker", "oci"],
+"INFRASTRUCTURE_PROVIDER": ["vsphere", "aws", "azure", "docker", "oci"],
 "IS_WINDOWS_WORKLOAD_CLUSTER": ["vsphere"],
 
 "SIZE": ["vsphere", "aws", "azure", "docker"],
@@ -193,11 +193,11 @@ return {
 "SERVICE_CIDR": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker"],
 "NODE_STARTUP_TIMEOUT": ["vsphere", "aws", "azure", "docker"],
 
-"CONTROL_PLANE_MACHINE_COUNT": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker"],
-"WORKER_MACHINE_COUNT": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker"],
-"WORKER_MACHINE_COUNT_0": ["vsphere", "aws", "azure", "docker"],
-"WORKER_MACHINE_COUNT_1": ["vsphere", "aws", "azure", "docker"],
-"WORKER_MACHINE_COUNT_2": ["vsphere", "aws", "azure", "docker"],
+"CONTROL_PLANE_MACHINE_COUNT": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker", "oci"],
+"WORKER_MACHINE_COUNT": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker", "oci"],
+"WORKER_MACHINE_COUNT_0": ["vsphere", "aws", "azure", "docker", "oci"],
+"WORKER_MACHINE_COUNT_1": ["vsphere", "aws", "azure", "docker", "oci"],
+"WORKER_MACHINE_COUNT_2": ["vsphere", "aws", "azure", "docker", "oci"],
 
 "OS_NAME": ["vsphere", "aws", "azure", "docker"],
 "OS_VERSION": ["vsphere", "aws", "azure", "docker"],
@@ -271,22 +271,32 @@ return {
 "AVI_INGRESS_NODE_NETWORK_LIST": ["vsphere"],
 "AVI_CONTROL_PLANE_HA_PROVIDER": ["vsphere"],
 
-"ANTREA_NO_SNAT": ["vsphere", "aws", "azure", "docker"],
-"ANTREA_TRAFFIC_ENCAP_MODE": ["vsphere", "aws", "azure", "docker"],
-"ANTREA_PROXY": ["vsphere", "aws", "azure", "docker"],
-"ANTREA_ENDPOINTSLICE": ["vsphere", "aws", "azure", "docker"],
-"ANTREA_POLICY": ["vsphere", "aws", "azure", "docker"],
-"ANTREA_NODEPORTLOCAL": ["vsphere", "aws", "azure", "docker"],
-"ANTREA_TRACEFLOW": ["vsphere", "aws", "azure", "docker"],
-"ANTREA_EGRESS": ["vsphere", "aws", "azure", "docker"],
-"ANTREA_FLOWEXPORTER": ["vsphere", "aws", "azure", "docker"],
-"ANTREA_DISABLE_UDP_TUNNEL_OFFLOAD": ["vsphere", "aws", "azure", "docker"],
+"OCI_IMAGE_ID": ["oci"],
+"OCI_COMPARTMENT_ID": ["oci"],
+"OCI_NODE_MACHINE_TYPE": ["oci"],
+"OCI_NODE_MACHINE_TYPE_OCPUS": ["oci"],
+"OCI_SSH_KEY": ["tkg-service-vsphere"],
+"OCI_NODE_PV_TRANSIT_ENCRYPTION": ["oci"],
+"OCI_CONTROL_PLANE_MACHINE_TYPE": ["oci"],
+"OCI_CONTROL_PLANE_MACHINE_TYPE_OCPUS": ["oci"],
 
-"PROVIDER_TYPE": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker"],
-"TKG_CLUSTER_ROLE": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker"],
-"TKG_VERSION": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker"],
-"CNI": ["vsphere", "aws", "azure", "docker"],
+"ANTREA_NO_SNAT": ["vsphere", "aws", "azure", "docker", "oci"],
+"ANTREA_TRAFFIC_ENCAP_MODE": ["vsphere", "aws", "azure", "docker", "oci"],
+"ANTREA_PROXY": ["vsphere", "aws", "azure", "docker", "oci"],
+"ANTREA_ENDPOINTSLICE": ["vsphere", "aws", "azure", "docker", "oci"],
+"ANTREA_POLICY": ["vsphere", "aws", "azure", "docker", "oci"],
+"ANTREA_NODEPORTLOCAL": ["vsphere", "aws", "azure", "docker", "oci"],
+"ANTREA_TRACEFLOW": ["vsphere", "aws", "azure", "docker", "oci"],
+"ANTREA_EGRESS": ["vsphere", "aws", "azure", "docker", "oci"],
+"ANTREA_FLOWEXPORTER": ["vsphere", "aws", "azure", "docker", "oci"],
+"ANTREA_DISABLE_UDP_TUNNEL_OFFLOAD": ["vsphere", "aws", "azure", "docker", "oci"],
+
+"PROVIDER_TYPE": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker", "oci"],
+"TKG_CLUSTER_ROLE": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker", "oci"],
+"TKG_VERSION": ["vsphere", "aws", "azure", "tkg-service-vsphere", "docker", "oci"],
+"CNI": ["vsphere", "aws", "azure", "docker", "oci"],
 "VSPHERE_VERSION": ["vsphere"],
 }
+
 
 end

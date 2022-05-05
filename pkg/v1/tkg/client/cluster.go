@@ -32,6 +32,8 @@ const (
 	AWSProviderName = "aws"
 	// AzureProviderName azure provider name
 	AzureProviderName = "azure"
+	// OCIProviderName OCI provider name
+	OCIProviderName = "oci"
 	// DockerProviderName docker provider name
 	DockerProviderName = "docker"
 
@@ -602,6 +604,11 @@ func (c *TkgClient) ConfigureAndValidateWorkloadClusterConfiguration(options *Cr
 		if err := c.ConfigureAndValidateAzureConfig(options.TKRVersion, options.NodeSizeOptions, skipValidation,
 			options.ClusterConfigOptions.ProviderRepositorySource.Flavor == constants.PlanProd, *options.WorkerMachineCount, nil, false); err != nil {
 			return errors.Wrap(err, "Azure config validation failed")
+		}
+	case OCIProviderName:
+		if err := c.ConfigureAndValidateOCIConfig(options.TKRVersion, options.NodeSizeOptions, skipValidation,
+			options.ClusterConfigOptions.ProviderRepositorySource.Flavor == constants.PlanProd, *options.WorkerMachineCount, nil, false); err != nil {
+			return errors.Wrap(err, "OCI config validation failed")
 		}
 	case DockerProviderName:
 		if err := c.ConfigureAndValidateDockerConfig(options.TKRVersion, options.NodeSizeOptions, skipValidation); err != nil {
