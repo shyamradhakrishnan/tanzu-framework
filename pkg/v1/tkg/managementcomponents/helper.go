@@ -15,6 +15,7 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/vmware-tanzu/tanzu-framework/pkg/v1/tkg/constants"
+	"github.com/vmware-tanzu/tanzu-framework/pkg/v1/tkg/log"
 	"github.com/vmware-tanzu/tanzu-framework/pkg/v1/tkg/tkgconfigbom"
 	"github.com/vmware-tanzu/tanzu-framework/pkg/v1/tkg/utils"
 )
@@ -30,6 +31,8 @@ func GetTKGPackageConfigValuesFileFromUserConfig(managementPackageVersion string
 	// that fetches these values from tkg-bom(for bom related urls) and set the TKR source controller package values
 	var tkrRepoImagePath string
 	providerType := userProviderConfigValues[constants.ConfigVariableProviderType]
+	fmt.Printf("provider type is %v\n", providerType)
+	log.V(3).Info("provider type is", "provider", providerType)
 	switch providerType {
 	case constants.InfrastructureProviderVSphere:
 		tkrRepoImagePath = fmt.Sprintf("%s/%s", tkgBomConfig.ImageConfig.ImageRepository, tkgBomConfig.TKRPackageRepo.VSphereNonparavirt)
@@ -41,6 +44,8 @@ func GetTKGPackageConfigValuesFileFromUserConfig(managementPackageVersion string
 	// The issue https://github.com/vmware-tanzu/tanzu-framework/issues/3215 has been filed to add TKR components for CAPD
 	case constants.InfrastructureProviderDocker:
 		tkrRepoImagePath = fmt.Sprintf("%s/%s", tkgBomConfig.ImageConfig.ImageRepository, tkgBomConfig.TKRPackageRepo.VSphereNonparavirt)
+	case constants.InfrastructureProviderOCI:
+		tkrRepoImagePath = fmt.Sprintf("%s/%s", tkgBomConfig.ImageConfig.ImageRepository, tkgBomConfig.TKRPackageRepo.OCI)
 	default:
 		return "", errors.Errorf("unknown provider type %q", providerType)
 	}
