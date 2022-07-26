@@ -177,6 +177,14 @@ repositories:
         version: latest
         #! Gets replaced with imgpkg sha256 at build, this should be name:version
         sha256: "tkr-vsphere-machine-webhook:latest"
+      - name: tkr-oci-machine-webhook
+        displayName: tkr-oci-machine-webhook
+        #! Relative path to package bundle
+        path: packages/tkr-oci-machine-webhook
+        domain: tanzu.vmware.com
+        version: latest
+        #! Gets replaced with imgpkg sha256 at build, this should be name:version
+        sha256: "tkr-oci-machine-webhook:latest"
       - name: tkr-service
         displayName: tkr-service
         #! Relative path to package bundle
