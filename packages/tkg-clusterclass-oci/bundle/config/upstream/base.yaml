@@ -661,3 +661,5 @@ spec:
           kubeletExtraArgs:
             cloud-provider: external
             provider-id: oci://{{ ds["id"] }}
+      preKubeadmCommands: []
+      files: []
