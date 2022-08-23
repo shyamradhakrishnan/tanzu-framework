@@ -50,6 +50,11 @@ spec:
     version: #@ data.values.KUBERNETES_VERSION
     controlPlane:
       replicas: #@ data.values.CONTROL_PLANE_MACHINE_COUNT
+      metadata:
+        annotations:
+          #! VVV TODO(vui) os-name handling
+          #! TODO(fhan): hardcoded the region for now, change it later to use CLI config field
+          run.tanzu.vmware.com/resolve-os-image: #@ "oci-region=us-phoenix-1,os-name=ubuntu"
     workers:
       machineDeployments:
         #@overlay/match by=overlay.index(0)
@@ -58,17 +63,30 @@ spec:
           replicas: #@ data.values.WORKER_MACHINE_COUNT_0
           #@overlay/match missing_ok=True
           failureDomain: "1"
+          metadata:
+            annotations:
+              #! VVV TODO(vui) os-name handling
+              #! TODO(fhan): hardcoded the region for now, change it later to use CLI config field
+              run.tanzu.vmware.com/resolve-os-image: #@ "oci-region=us-phoenix-1,os-name=ubuntu"
         #@ if data.values.CLUSTER_PLAN == "prodcc":
         #@overlay/append
         - class: tkg-worker
           name: md-1
           replicas: #@ data.values.WORKER_MACHINE_COUNT_1
           failureDomain: #@ "2"
+          metadata:
+            annotations:
+              #! VVV TODO(vui) os-name handling
+              run.tanzu.vmware.com/resolve-os-image: #@ "oci-region=us-phoenix-1,os-name=ubuntu"
         #@overlay/append
         - class: tkg-worker
           name: md-2
           replicas: #@ data.values.WORKER_MACHINE_COUNT_2
           failureDomain: #@ "3"
+          metadata:
+            annotations:
+              #! VVV TODO(vui) os-name handling
+              run.tanzu.vmware.com/resolve-os-image: #@ "oci-region=us-phoenix-1,os-name=ubuntu"
       #@ end
     #@overlay/match missing_ok=True
     variables:
