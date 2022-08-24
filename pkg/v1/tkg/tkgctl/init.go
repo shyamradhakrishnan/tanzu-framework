@@ -38,6 +38,7 @@ type InitRegionOptions struct {
 	Browser                     string
 	VsphereControlPlaneEndpoint string
 	Edition                     string
+	AdditionalManifests         string
 	FeatureFlags                map[string]string
 	Timeout                     time.Duration
 	UI                          bool
@@ -61,6 +62,8 @@ func (t *tkgctl) Init(options InitRegionOptions) error {
 	if err != nil {
 		return err
 	}
+
+	// TODO @randomvariable: Add validation for additional manifests
 
 	err = ensureConfigImages(t.configDir, t.tkgConfigUpdaterClient)
 	if err != nil {
@@ -357,6 +360,7 @@ func (t *tkgctl) populateClientInitRegionOptions(options *InitRegionOptions, nod
 		FeatureFlags:                options.FeatureFlags,
 		VsphereControlPlaneEndpoint: options.VsphereControlPlaneEndpoint,
 		Edition:                     options.Edition,
+		AdditionalManifests:         options.AdditionalManifests,
 	}
 }
 

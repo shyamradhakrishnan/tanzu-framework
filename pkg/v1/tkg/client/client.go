@@ -74,6 +74,7 @@ type InitRegionOptions struct {
 	CniType                      string
 	VsphereControlPlaneEndpoint  string
 	Edition                      string
+	AdditionalManifests          string
 	Annotations                  map[string]string
 	Labels                       map[string]string
 	FeatureFlags                 map[string]string

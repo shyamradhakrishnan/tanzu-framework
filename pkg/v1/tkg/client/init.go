@@ -225,6 +225,8 @@ func (c *TkgClient) InitRegion(options *InitRegionOptions) error { //nolint:funl
 		}
 	}
 
+	bootStrapClusterClient.ApplyFile(options.AdditionalManifests)
+
 	// Obtain management cluster configuration of a provided flavor
 	if regionalConfigBytes, options.ClusterName, configFilePath, err = c.BuildRegionalClusterConfiguration(options); err != nil {
 		return errors.Wrap(err, "unable to build management cluster configuration")

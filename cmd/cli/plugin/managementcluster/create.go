@@ -27,6 +27,7 @@ type initRegionOptions struct {
 	dryRun                      bool
 	forceConfigUpdate           bool
 	clusterConfigFile           string
+	additionalManifests         string
 	plan                        string
 	clusterName                 string
 	coreProvider                string
@@ -139,6 +140,8 @@ func init() {
 	createCmd.Flags().BoolVar(&iro.forceConfigUpdate, "force-config-update", false, "Force an update of all configuration files in ${HOME}/.config/tanzu/tkg/bom and ${HOME}/.tanzu/tkg/compatibility")
 
 	createCmd.Flags().SetNormalizeFunc(aliasNormalizeFunc)
+
+	createCmd.Flags().StringVarP(&iro.additionalManifests, "additional-manifests", "", "", "Additional manifests to be applied to the bootstrap cluster")
 }
 
 func aliasNormalizeFunc(f *pflag.FlagSet, name string) pflag.NormalizedName {
@@ -193,6 +196,7 @@ func runInit() error {
 		Timeout:                     iro.timeout,
 		Edition:                     edition,
 		GenerateOnly:                iro.dryRun,
+		AdditionalManifests: iro.additionalManifests,
 	}
 
 	err = tkgClient.Init(options)
