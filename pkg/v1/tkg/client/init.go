@@ -225,7 +225,7 @@ func (c *TkgClient) InitRegion(options *InitRegionOptions) error { //nolint:funl
 		}
 	}
 
-	if err = bootStrapClusterClient.ApplyFile(options.AdditionalManifests); err != nil {
+	if err = bootStrapClusterClient.ApplyFileRecursively(options.AdditionalManifests); err != nil {
 		return errors.Wrap(err, "unable to apply additional manifests")
 	}
 

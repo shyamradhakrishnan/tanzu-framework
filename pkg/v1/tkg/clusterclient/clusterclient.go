@@ -110,8 +110,10 @@ type Client interface {
 
 	// Apply applies a yaml string to a cluster
 	Apply(string) error
-	// Apply configuration to a cluster by filename
+	// ApplyFile runs kubectl apply on a file/url every `interval` until it succeeds or a timeout is reached.
 	ApplyFile(string) error
+	// ApplyFileRecursively runs kubectl apply recursively on a dir/url every `interval` until it succeeds or a timeout is reached.
+	ApplyFileRecursively(string) error
 	// WaitForClusterInitialized waits for a cluster to be initialized so the kubeconfig file can be fetched
 	WaitForClusterInitialized(clusterName string, namespace string) error
 	// WaitForClusterReady for a cluster to be fully provisioned and so ready to be moved
@@ -513,10 +515,18 @@ func (c *client) Apply(yaml string) error {
 	return err
 }
 
-// Apply runs kubectl apply on a file/url every `interval` until it succeeds or a timeout is reached.
+// ApplyFile runs kubectl apply on a file/url every `interval` until it succeeds or a timeout is reached.
 func (c *client) ApplyFile(filePath string) error {
 	_, err := c.poller.PollImmediateWithGetter(kubectlApplyRetryInterval, kubectlApplyRetryTimeout, func() (interface{}, error) {
 		return nil, c.kubectlApplyFile(filePath)
+	})
+	return err
+}
+
+// ApplyFileRecursively runs kubectl apply recursively on a dir/url every `interval` until it succeeds or a timeout is reached.
+func (c *client) ApplyFileRecursively(filePath string) error {
+	_, err := c.poller.PollImmediateWithGetter(kubectlApplyRetryInterval, kubectlApplyRetryTimeout, func() (interface{}, error) {
+		return nil, c.kubectlApplyFileRecursively(filePath)
 	})
 	return err
 }
@@ -1271,7 +1281,14 @@ func removeAppliedFile(f *os.File) {
 	}
 }
 
-func (c *client) kubectlApplyFile(url string) error {
+// ApplyFileOptions configures a kubectl apply, whether it is recursive or not
+type ApplyFileOptions struct {
+	url       string
+	recursive bool
+}
+
+// kubectlApplyFileImpl applies the given url for kubectl apply
+func (c *client) kubectlApplyFileImpl(o ApplyFileOptions) error {
 	args := []string{"apply"}
 	if c.kubeConfigPath != "" {
 		args = append(args, "--kubeconfig", c.kubeConfigPath)
@@ -1280,15 +1297,26 @@ func (c *client) kubectlApplyFile(url string) error {
 	if c.currentContext != "" {
 		args = append(args, "--context", c.currentContext)
 	}
-
-	args = append(args, "-f", url)
+	if o.recursive {
+		args = append(args, "--recursive")
+	}
+	args = append(args, "-f", o.url)
 	cmd := exec.Command("kubectl", args...)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return errors.Wrapf(err, "kubectl apply failed, output: %s", string(out))
 	}
-
 	return nil
+}
+
+// kubectlApplyFile applies the given url with kubectl non-recursively
+func (c *client) kubectlApplyFile(url string) error {
+	return c.kubectlApplyFileImpl(ApplyFileOptions{url: url})
+}
+
+// kubectlApplyFileRecursively applies the given url with kubectl recursively
+func (c *client) kubectlApplyFileRecursively(url string) error {
+	return c.kubectlApplyFileImpl(ApplyFileOptions{url: url, recursive: true})
 }
 
 func (c *client) kubectlApply(yaml string) error {
