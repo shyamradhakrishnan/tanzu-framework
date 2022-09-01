@@ -225,7 +225,9 @@ func (c *TkgClient) InitRegion(options *InitRegionOptions) error { //nolint:funl
 		}
 	}
 
-	bootStrapClusterClient.ApplyFile(options.AdditionalManifests)
+	if err = bootStrapClusterClient.ApplyFile(options.AdditionalManifests); err != nil {
+		return errors.Wrap(err, "unable to apply additional manifests")
+	}
 
 	// Obtain management cluster configuration of a provided flavor
 	if regionalConfigBytes, options.ClusterName, configFilePath, err = c.BuildRegionalClusterConfiguration(options); err != nil {
