@@ -700,6 +700,15 @@ OCI_IMAGE_ID:
 OCI_COMPARTMENT_ID:
 OCI_SSH_KEY:
 
+#! Settings to use externally managed network infrastructure
+OCI_EXTERNAL_VCN_ID:
+OCI_EXTERNAL_CONTROL_PLANE_EP_NSG_ID:
+OCI_EXTERNAL_CONTROL_PLANE_NSG_ID:
+OCI_EXTERNAL_WORKER_NSG_ID:
+OCI_EXTERNAL_CONTROL_PLANE_EP_SUBNET_ID:
+OCI_EXTERNAL_CONTROL_PLANE_SUBNET_ID:
+OCI_EXTERNAL_WORKER_SUBNET_ID:
+
 #! ---------------------------------------------------------------------
 #! BoM file processing, internal use only
 #! ---------------------------------------------------------------------

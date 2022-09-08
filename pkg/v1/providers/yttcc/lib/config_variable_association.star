@@ -855,6 +855,14 @@ def get_oci_vars():
     simpleMapping["OCI_CONTROL_PLANE_MACHINE_TYPE_OCPUS"] = "controlPlaneMachineOcpus"
     simpleMapping["OCI_CONTROL_PLANE_PV_TRANSIT_ENCRYPTION"] = "controlPlanePvTransitEncryption"
 
+    simpleMapping["OCI_EXTERNAL_VCN_ID"] = "externalVCNId"
+    simpleMapping["OCI_EXTERNAL_CONTROL_PLANE_EP_NSG_ID"] = "externalControlPlaneEndpointNSGId"
+    simpleMapping["OCI_EXTERNAL_CONTROL_PLANE_NSG_ID"] = "externalControlPlaneNSGId"
+    simpleMapping["OCI_EXTERNAL_WORKER_NSG_ID"] = "externalWorkerNSGId"
+    simpleMapping["OCI_EXTERNAL_CONTROL_PLANE_EP_SUBNET_ID"] = "externalControlPlaneEndpointSubnetId"
+    simpleMapping["OCI_EXTERNAL_CONTROL_PLANE_SUBNET_ID"] = "externalControlPlaneSubnetId"
+    simpleMapping["OCI_EXTERNAL_WORKER_SUBNET_ID"] = "externalWorkerSubnetId"
+
     vars = get_cluster_variables()
 
     for key in simpleMapping:
@@ -864,3 +872,11 @@ def get_oci_vars():
     end
     return vars
 end
+
+oci_var_keys = ["imageId", "compartmentId", "sshKey", "nodeMachineShape", "nodeMachineOcpus",
+        "externalVCNId",
+        "externalControlPlaneEndpointNSGId", "externalControlPlaneNSGId", "externalWorkerNSGId",
+        "externalControlPlaneEndpointSubnetId", "externalControlPlaneSubnetId", "externalWorkerSubnetId",
+        "nodePvTransitEncryption", "controlPlaneMachineShape", "controlPlaneMachineOcpus",
+        "controlPlanePvTransitEncryption",
+        "imageRepository", "trust", "auditLogging", "cni", "TKR_DATA"]
