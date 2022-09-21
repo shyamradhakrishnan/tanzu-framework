@@ -3142,6 +3142,12 @@ spec:
           env:
             - name: AUTH_CONFIG_DIR
               value: /etc/oci
+            - name: HTTP_PROXY
+              value: ${TKG_HTTP_PROXY}
+            - name: HTTPS_PROXY
+              value: ${TKG_HTTPS_PROXY}
+            - name: NO_PROXY
+              value: ${TKG_NO_PROXY}
           image: ghcr.io/oracle/cluster-api-oci-controller:${CAPOCI_CONTROLLER_IMAGE_TAG}
           imagePullPolicy: IfNotPresent
           livenessProbe:
