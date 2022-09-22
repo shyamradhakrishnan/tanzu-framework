@@ -54,6 +54,41 @@ spec:
       schema:
         openAPIV3Schema:
           type: string
+    - name: externalVCNId
+      required: false
+      schema:
+        openAPIV3Schema:
+          type: string
+    - name: externalControlPlaneEndpointNSGId
+      required: false
+      schema:
+        openAPIV3Schema:
+          type: string
+    - name: externalControlPlaneNSGId
+      required: false
+      schema:
+        openAPIV3Schema:
+          type: string
+    - name: externalWorkerNSGId
+      required: false
+      schema:
+        openAPIV3Schema:
+          type: string
+    - name: externalControlPlaneEndpointSubnetId
+      required: false
+      schema:
+        openAPIV3Schema:
+          type: string
+    - name: externalControlPlaneSubnetId
+      required: false
+      schema:
+        openAPIV3Schema:
+          type: string
+    - name: externalWorkerSubnetId
+      required: false
+      schema:
+        openAPIV3Schema:
+          type: string
     - name: nodeMachineShape
       required: false
       schema:
