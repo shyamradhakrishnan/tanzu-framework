@@ -193,6 +193,77 @@ spec:
               path: "/spec/template/spec/compartmentId"
               valueFrom:
                 variable: compartmentId
+    #! JSON Patches for externally managed cluster infrastructure
+    #! these patches are only enabled if a non-empty externalVCNId variable is specified
+    - name: skipNetworkManagement
+      enabledIf: '{{ not (empty .externalVCNId) }}'
+      definitions:
+        - selector:
+          apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+          kind: OCIClusterTemplate
+          matchResources:
+            infrastructureCluster: true
+          jsonPatches:
+            - op: add
+              path: "/spec/template/spec/networkSpec/skipNetworkManagement"
+              value: true
+    - name: externalVCNId
+      enabledIf: '{{ not (empty .externalVCNId) }}'
+      definitions:
+        - selector:
+          apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+          kind: OCIClusterTemplate
+          matchResources:
+            infrastructureCluster: true
+          jsonPatches:
+            - op: add
+              path: "/spec/template/spec/networkSpec/vcn/id"
+              valueFrom:
+                variable: externalVCNId
+    - name: externalNetworkSecurityGroups
+      enabledIf: '{{ not (empty .externalVCNId) }}'
+      definitions:
+        - selector:
+          apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+          kind: OCIClusterTemplate
+          matchResources:
+            infrastructureCluster: true
+          jsonPatches:
+            - op: replace
+              path: "/spec/template/spec/networkSpec/vcn/networkSecurityGroups"
+              valueFrom:
+                template: |
+                  - id: {{ .externalControlPlaneEndpointNSGId }}
+                    role: control-plane-endpoint
+                    name: control-plane-endpoint
+                  - id: {{ .externalWorkerNSGId }}
+                    role: worker
+                    name: worker
+                  - id: {{ .externalControlPlaneNSGId }}
+                    role: control-plane
+                    name: control-plane
+    - name: externalSubnets
+      enabledIf: '{{ not (empty .externalVCNId) }}'
+      definitions:
+        - selector:
+          apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+          kind: OCIClusterTemplate
+          matchResources:
+            infrastructureCluster: true
+          jsonPatches:
+            - op: replace
+              path: "/spec/template/spec/networkSpec/vcn/subnets"
+              valueFrom:
+                template: |
+                  - id: {{ .externalControlPlaneEndpointSubnetId }}
+                    role: control-plane-endpoint
+                    name: control-plane-endpoint
+                  - id: {{ .externalWorkerSubnetId }}
+                    role: worker
+                    name: worker
+                  - id: {{ .externalControlPlaneSubnetId }}
+                    role: control-plane
+                    name: control-plane
     - name: sshAuthorizedKeys
       definitions:
         - selector:
