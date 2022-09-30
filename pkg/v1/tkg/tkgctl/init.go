@@ -20,34 +20,35 @@ import (
 
 // InitRegionOptions init region options
 type InitRegionOptions struct {
-	ClusterConfigFile           string
-	Plan                        string
-	ClusterName                 string
-	CoreProvider                string
-	BootstrapProvider           string
-	InfrastructureProvider      string
-	ControlPlaneProvider        string
-	Namespace                   string
-	WatchingNamespace           string
-	Size                        string
-	ControlPlaneSize            string
-	WorkerSize                  string
-	CeipOptIn                   string
-	CniType                     string
-	Bind                        string
-	Browser                     string
-	VsphereControlPlaneEndpoint string
-	Edition                     string
-	AdditionalManifests         string
-	FeatureFlags                map[string]string
-	Timeout                     time.Duration
-	UI                          bool
-	UseExistingCluster          bool
-	BootstrapClusterOnly        bool
-	EnableTKGSOnVsphere7        bool
-	DeployTKGonVsphere7         bool
-	SkipPrompt                  bool
-	GenerateOnly                bool
+	ClusterConfigFile            string
+	Plan                         string
+	ClusterName                  string
+	CoreProvider                 string
+	BootstrapProvider            string
+	InfrastructureProvider       string
+	ControlPlaneProvider         string
+	Namespace                    string
+	WatchingNamespace            string
+	Size                         string
+	ControlPlaneSize             string
+	WorkerSize                   string
+	CeipOptIn                    string
+	CniType                      string
+	Bind                         string
+	Browser                      string
+	VsphereControlPlaneEndpoint  string
+	Edition                      string
+	AdditionalManifests          string
+	AdditionalManifestsNamespace string
+	FeatureFlags                 map[string]string
+	Timeout                      time.Duration
+	UI                           bool
+	UseExistingCluster           bool
+	BootstrapClusterOnly         bool
+	EnableTKGSOnVsphere7         bool
+	DeployTKGonVsphere7          bool
+	SkipPrompt                   bool
+	GenerateOnly                 bool
 }
 
 const (

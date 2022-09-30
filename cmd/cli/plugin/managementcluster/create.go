@@ -18,34 +18,35 @@ import (
 )
 
 type initRegionOptions struct {
-	ui                          bool
-	useExistingCluster          bool
-	bootstrapClusterOnly        bool
-	enableTKGSOnVsphere7        bool
-	deployTKGonVsphere7         bool
-	unattended                  bool
-	dryRun                      bool
-	forceConfigUpdate           bool
-	clusterConfigFile           string
-	additionalManifests         string
-	plan                        string
-	clusterName                 string
-	coreProvider                string
-	bootstrapProvider           string
-	infrastructureProvider      string
-	controlPlaneProvider        string
-	targetNamespace             string
-	watchingNamespace           string
-	timeout                     time.Duration
-	size                        string
-	controlPlaneSize            string
-	workerSize                  string
-	ceipOptIn                   string
-	cniType                     string
-	featureFlags                map[string]string
-	bind                        string
-	browser                     string
-	vsphereControlPlaneEndpoint string
+	ui                           bool
+	useExistingCluster           bool
+	bootstrapClusterOnly         bool
+	enableTKGSOnVsphere7         bool
+	deployTKGonVsphere7          bool
+	unattended                   bool
+	dryRun                       bool
+	forceConfigUpdate            bool
+	clusterConfigFile            string
+	additionalManifests          string
+	additionalManifestsNamespace string
+	plan                         string
+	clusterName                  string
+	coreProvider                 string
+	bootstrapProvider            string
+	infrastructureProvider       string
+	controlPlaneProvider         string
+	targetNamespace              string
+	watchingNamespace            string
+	timeout                      time.Duration
+	size                         string
+	controlPlaneSize             string
+	workerSize                   string
+	ceipOptIn                    string
+	cniType                      string
+	featureFlags                 map[string]string
+	bind                         string
+	browser                      string
+	vsphereControlPlaneEndpoint  string
 }
 
 var iro = &initRegionOptions{}
@@ -142,6 +143,7 @@ func init() {
 	createCmd.Flags().SetNormalizeFunc(aliasNormalizeFunc)
 
 	createCmd.Flags().StringVarP(&iro.additionalManifests, "additional-manifests", "", "", "Additional manifests to be applied to the bootstrap cluster")
+	createCmd.Flags().StringVarP(&iro.additionalManifestsNamespace, "additional-manifests-namespace", "", "", "Namespace of the additional manifest")
 }
 
 func aliasNormalizeFunc(f *pflag.FlagSet, name string) pflag.NormalizedName {
@@ -169,34 +171,35 @@ func runInit() error {
 	}
 
 	options := tkgctl.InitRegionOptions{
-		ClusterConfigFile:           iro.clusterConfigFile,
-		Plan:                        iro.plan,
-		UI:                          iro.ui,
-		ClusterName:                 iro.clusterName,
-		UseExistingCluster:          iro.useExistingCluster,
-		BootstrapClusterOnly:        iro.bootstrapClusterOnly,
-		CoreProvider:                iro.coreProvider,
-		BootstrapProvider:           iro.bootstrapProvider,
-		InfrastructureProvider:      iro.infrastructureProvider,
-		ControlPlaneProvider:        iro.controlPlaneProvider,
-		Namespace:                   iro.targetNamespace,
-		WatchingNamespace:           iro.watchingNamespace,
-		Size:                        iro.size,
-		ControlPlaneSize:            iro.controlPlaneSize,
-		WorkerSize:                  iro.workerSize,
-		CeipOptIn:                   iro.ceipOptIn,
-		CniType:                     iro.cniType,
-		FeatureFlags:                iro.featureFlags,
-		EnableTKGSOnVsphere7:        iro.enableTKGSOnVsphere7,
-		DeployTKGonVsphere7:         iro.deployTKGonVsphere7,
-		Bind:                        iro.bind,
-		Browser:                     iro.browser,
-		VsphereControlPlaneEndpoint: iro.vsphereControlPlaneEndpoint,
-		SkipPrompt:                  iro.unattended,
-		Timeout:                     iro.timeout,
-		Edition:                     edition,
-		GenerateOnly:                iro.dryRun,
-		AdditionalManifests: iro.additionalManifests,
+		ClusterConfigFile:            iro.clusterConfigFile,
+		Plan:                         iro.plan,
+		UI:                           iro.ui,
+		ClusterName:                  iro.clusterName,
+		UseExistingCluster:           iro.useExistingCluster,
+		BootstrapClusterOnly:         iro.bootstrapClusterOnly,
+		CoreProvider:                 iro.coreProvider,
+		BootstrapProvider:            iro.bootstrapProvider,
+		InfrastructureProvider:       iro.infrastructureProvider,
+		ControlPlaneProvider:         iro.controlPlaneProvider,
+		Namespace:                    iro.targetNamespace,
+		WatchingNamespace:            iro.watchingNamespace,
+		Size:                         iro.size,
+		ControlPlaneSize:             iro.controlPlaneSize,
+		WorkerSize:                   iro.workerSize,
+		CeipOptIn:                    iro.ceipOptIn,
+		CniType:                      iro.cniType,
+		FeatureFlags:                 iro.featureFlags,
+		EnableTKGSOnVsphere7:         iro.enableTKGSOnVsphere7,
+		DeployTKGonVsphere7:          iro.deployTKGonVsphere7,
+		Bind:                         iro.bind,
+		Browser:                      iro.browser,
+		VsphereControlPlaneEndpoint:  iro.vsphereControlPlaneEndpoint,
+		SkipPrompt:                   iro.unattended,
+		Timeout:                      iro.timeout,
+		Edition:                      edition,
+		GenerateOnly:                 iro.dryRun,
+		AdditionalManifests:          iro.additionalManifests,
+		AdditionalManifestsNamespace: iro.additionalManifestsNamespace,
 	}
 
 	err = tkgClient.Init(options)

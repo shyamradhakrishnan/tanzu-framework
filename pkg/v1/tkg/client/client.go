@@ -75,6 +75,7 @@ type InitRegionOptions struct {
 	VsphereControlPlaneEndpoint  string
 	Edition                      string
 	AdditionalManifests          string
+	AdditionalManifestsNamespace string
 	Annotations                  map[string]string
 	Labels                       map[string]string
 	FeatureFlags                 map[string]string
