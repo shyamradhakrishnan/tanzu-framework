@@ -112,6 +112,8 @@ const (
 	InfrastructureRefAzure = "AzureCluster"
 	// InfrastructureRefDocker is the docker infrastructure
 	InfrastructureRefDocker = "DockerCluster"
+	// InfrastructureRefOCI is the Oracle Cloud infrastructure
+	InfrastructureRefOCI = "OCICluster"
 )
 
 // networking constants

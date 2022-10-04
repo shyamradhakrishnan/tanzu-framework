@@ -183,6 +183,8 @@ func GetInfraProvider(cluster *clusterv1beta1.Cluster) (string, error) {
 			return tkgconstants.InfrastructureProviderAzure, nil
 		case tkgconstants.InfrastructureRefDocker:
 			return tkgconstants.InfrastructureProviderDocker, nil
+		case tkgconstants.InfrastructureRefOCI:
+			return tkgconstants.InfrastructureProviderOCI, nil
 		}
 	}
 
