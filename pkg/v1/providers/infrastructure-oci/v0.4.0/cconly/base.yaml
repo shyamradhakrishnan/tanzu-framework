@@ -206,10 +206,10 @@ spec:
       enabledIf: '{{ not (empty .externalVCNId) }}'
       definitions:
         - selector:
-          apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-          kind: OCIClusterTemplate
-          matchResources:
-            infrastructureCluster: true
+            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+            kind: OCIClusterTemplate
+            matchResources:
+              infrastructureCluster: true
           jsonPatches:
             - op: add
               path: "/spec/template/spec/networkSpec/skipNetworkManagement"
@@ -218,10 +218,10 @@ spec:
       enabledIf: '{{ not (empty .externalVCNId) }}'
       definitions:
         - selector:
-          apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-          kind: OCIClusterTemplate
-          matchResources:
-            infrastructureCluster: true
+            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+            kind: OCIClusterTemplate
+            matchResources:
+              infrastructureCluster: true
           jsonPatches:
             - op: add
               path: "/spec/template/spec/networkSpec/vcn/id"
@@ -231,10 +231,10 @@ spec:
       enabledIf: '{{ not (empty .externalVCNId) }}'
       definitions:
         - selector:
-          apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-          kind: OCIClusterTemplate
-          matchResources:
-            infrastructureCluster: true
+            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+            kind: OCIClusterTemplate
+            matchResources:
+              infrastructureCluster: true
           jsonPatches:
             - op: replace
               path: "/spec/template/spec/networkSpec/vcn/networkSecurityGroups"
@@ -253,12 +253,12 @@ spec:
       enabledIf: '{{ not (empty .externalVCNId) }}'
       definitions:
         - selector:
-          apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-          kind: OCIClusterTemplate
-          matchResources:
-            infrastructureCluster: true
+            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+            kind: OCIClusterTemplate
+            matchResources:
+              infrastructureCluster: true
           jsonPatches:
-            - op: replace
+            - op: add
               path: "/spec/template/spec/networkSpec/vcn/subnets"
               valueFrom:
                 template: |
