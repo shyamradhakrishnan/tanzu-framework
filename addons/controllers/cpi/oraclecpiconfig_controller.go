@@ -13,6 +13,7 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	clusterapiv1beta1 "sigs.k8s.io/cluster-api/api/v1beta1"
 	clusterapipatchutil "sigs.k8s.io/cluster-api/util/patch"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -63,7 +64,13 @@ func (r *OracleCPIConfigReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 		return ctrl.Result{}, err // no need to requeue if cluster is not found
 	}
 
-	if res, err := r.reconcileOracleCPIConfig(ctx, cpiConfig, cluster); err != nil {
+	authSecret, err := r.getOracleAuthSecret(ctx, r.Client)
+	if err != nil {
+		r.Log.Error(err, "Failed to get authentication secret", "name", authenticationSecretName, "namespace", authenticationSecretNamespace)
+		return ctrl.Result{}, err
+	}
+
+	if res, err := r.reconcileOracleCPIConfig(ctx, cpiConfig, cluster, authSecret); err != nil {
 		r.Log.Error(err, "Failed to reconcile VSphereCPIConfig")
 		return res, err
 	}
@@ -71,8 +78,25 @@ func (r *OracleCPIConfigReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 	return ctrl.Result{}, nil
 }
 
+const (
+	authenticationSecretName      = "capoci-auth-config"
+	authenticationSecretNamespace = "cluster-api-provider-oci-system"
+)
+
+// getOracleAuthSecret returns the secret that contains authentication credentials from CAPOCI
+func (r *OracleCPIConfigReconciler) getOracleAuthSecret(ctx context.Context, client client.Client) (*v1.Secret, error) {
+	var authSecret v1.Secret
+	if err := client.Get(ctx, types.NamespacedName{
+		Name:      authenticationSecretName,
+		Namespace: authenticationSecretNamespace}, &authSecret); err != nil {
+		return nil, err
+	}
+	return &authSecret, nil
+}
+
 // reconcileOracleCPIConfig reconciles OracleCPIConfig with its owner cluster
-func (r *OracleCPIConfigReconciler) reconcileOracleCPIConfig(ctx context.Context, cpiConfig *cpiv1alpha1.OracleCPIConfig, cluster *clusterapiv1beta1.Cluster) (_ ctrl.Result, retErr error) {
+// the owner cluster and the authentication secret are required to reconcile the OracleCPIConfig
+func (r *OracleCPIConfigReconciler) reconcileOracleCPIConfig(ctx context.Context, cpiConfig *cpiv1alpha1.OracleCPIConfig, cluster *clusterapiv1beta1.Cluster, auth *v1.Secret) (_ ctrl.Result, retErr error) {
 	// patch the CPIConfig CR in the end
 	patchHelper, err := clusterapipatchutil.NewHelper(cpiConfig, r.Client)
 	if err != nil {
@@ -88,8 +112,39 @@ func (r *OracleCPIConfigReconciler) reconcileOracleCPIConfig(ctx context.Context
 		r.Log.Info("Successfully patched OracleCPIConfig")
 	}()
 
+	fingerprint, ok := auth.Data["fingerprint"]
+	if !ok {
+		r.Log.Info("Cannot extract fingerprint", "name", authenticationSecretName, "namespace", authenticationSecretNamespace)
+	}
+	key, ok := auth.Data["key"]
+	if !ok {
+		r.Log.Info("Cannot extract key", "name", authenticationSecretName, "namespace", authenticationSecretNamespace)
+	}
+	region, ok := auth.Data["region"]
+	if !ok {
+		r.Log.Info("Cannot extract region", "name", authenticationSecretName, "namespace", authenticationSecretNamespace)
+	}
+	tenancy, ok := auth.Data["tenancy"]
+	if !ok {
+		r.Log.Info("Cannot extract tenancy", "name", authenticationSecretName, "namespace", authenticationSecretNamespace)
+	}
+	user, ok := auth.Data["user"]
+	if !ok {
+		r.Log.Info("Cannot extract user", "name", authenticationSecretName, "namespace", authenticationSecretNamespace)
+	}
+	// the passphrase is optional, use zero value if not provided
+	passphrase := auth.Data["passphrase"]
+
 	// convert the CPIConfig CR to data values
 	d := &OracleCPIDataValues{
+		Auth: OracleCPIDataValuesAuth{
+			Region:      string(region),
+			Tenancy:     string(tenancy),
+			User:        string(user),
+			Key:         string(key),
+			Fingerprint: string(fingerprint),
+			Passphrase:  string(passphrase),
+		},
 		Compartment: cpiConfig.Spec.Compartment,
 		VCN:         cpiConfig.Spec.VCN,
 		LoadBalancer: struct {
@@ -129,7 +184,7 @@ func (r *OracleCPIConfigReconciler) reconcileOracleCPIConfig(ctx context.Context
 			return err
 		}
 		secret.StringData[constants.TKGDataValueFileName] = string(yamlBytes)
-		r.Log.Info("Mutated OracleCPIConfig data values")
+		r.Log.Info("Mutated OracleCPIConfig data values", "newValue", string(yamlBytes))
 		return nil
 	})
 	if err != nil {

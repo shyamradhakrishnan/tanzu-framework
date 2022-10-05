@@ -19,6 +19,26 @@ spec:
     subnet2: ocid1.subnet.oc1.phx.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
     securityListManagementMode: Frontend
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cluster-api-provider-oci-system
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: capoci-auth-config
+  namespace: cluster-api-provider-oci-system
+type: Opaque
+data:
+  fingerprint: ZWI6MDI6ZWU6NGI6NGM6eHg6eHg6eHg6eHg6NTU6ZGY6NTQ6MDA6ZGI6YmU6MGY=
+  key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCgotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg==
+  passphrase: ""
+  region: dXMtc2Fuam9zZS0x
+  tenancy: b2NpZDEudGVuYW5jeS5vYzEuLmFhYWFhYWFheHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4
+  useInstancePrincipal: ZmFsc2U=
+  user: b2NpZDEudXNlci5vYzEuLmFhYWFhYWFheHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4
+---
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: OCICluster
 metadata:

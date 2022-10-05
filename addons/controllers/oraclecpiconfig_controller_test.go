@@ -74,8 +74,19 @@ var _ = Describe("OracleCPIConfig Reconciler", func() {
 					return false
 				}
 				secretData := string(secret.Data["values.yaml"])
+				fmt.Println(secretData) // debug dump
+
 				Expect(len(secretData)).Should(Not(BeZero()))
 				Expect(strings.Contains(secretData, "compartment: test-compartment")).Should(BeTrue())
+
+				// expect the authentication credentials to be read
+				Expect(strings.Contains(secretData, "region: us-sanjose-1")).Should(BeTrue())
+				Expect(strings.Contains(secretData, "tenancy: ocid1.tenancy.oc1..aaaaaaaaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")).Should(BeTrue())
+				Expect(strings.Contains(secretData, "user: ocid1.user.oc1..aaaaaaaaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")).Should(BeTrue())
+				Expect(strings.Contains(secretData, "key: |\t\t-----BEGIN PRIVATE KEY-----")).Should(BeTrue())
+				Expect(strings.Contains(secretData, "fingerprint: eb:02")).Should(BeTrue())
+				Expect(strings.Contains(secretData, "passphrase:")).Should(BeTrue())
+
 				return true
 			}).Should(BeTrue())
 
