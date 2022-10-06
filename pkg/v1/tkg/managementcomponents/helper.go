@@ -46,7 +46,7 @@ func GetTKGPackageConfigValuesFileFromUserConfig(managementPackageVersion string
 		tkrRepoImagePath = fmt.Sprintf("%s/%s", tkgBomConfig.ImageConfig.ImageRepository, tkgBomConfig.TKRPackageRepo.VSphereNonparavirt)
 	case constants.InfrastructureProviderOCI:
 		// @TODO(Fang Han): remove this hardcoded tkr-oci after its downstream version is available
-		tkrRepoImagePath = "gcr.io/my-project-1527816345739/tkg/tkr/tkr-oci"
+		tkrRepoImagePath = "gcr.io/tkg-on-oci/tkg/tkr/tkr-oci"
 	default:
 		return "", errors.Errorf("unknown provider type %q", providerType)
 	}
