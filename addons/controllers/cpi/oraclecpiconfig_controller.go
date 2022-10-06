@@ -96,7 +96,8 @@ func (r *OracleCPIConfigReconciler) getOracleAuthSecret(ctx context.Context, cli
 
 // reconcileOracleCPIConfig reconciles OracleCPIConfig with its owner cluster
 // the owner cluster and the authentication secret are required to reconcile the OracleCPIConfig
-func (r *OracleCPIConfigReconciler) reconcileOracleCPIConfig(ctx context.Context, cpiConfig *cpiv1alpha1.OracleCPIConfig, cluster *clusterapiv1beta1.Cluster, auth *v1.Secret) (_ ctrl.Result, retErr error) {
+func (r *OracleCPIConfigReconciler) reconcileOracleCPIConfig(ctx context.Context, cpiConfig *cpiv1alpha1.OracleCPIConfig,
+	cluster *clusterapiv1beta1.Cluster, auth *v1.Secret) (_ ctrl.Result, retErr error) {
 	// patch the CPIConfig CR in the end
 	patchHelper, err := clusterapipatchutil.NewHelper(cpiConfig, r.Client)
 	if err != nil {
@@ -134,6 +135,19 @@ func (r *OracleCPIConfigReconciler) reconcileOracleCPIConfig(ctx context.Context
 	}
 	// the passphrase is optional, use zero value if not provided
 	passphrase := auth.Data["passphrase"]
+	compartment, err := util.ParseClusterVariableString(cluster, "compartmentId")
+	if err != nil {
+		r.Log.Error(err, "Cannot extract compartment from cluster", "cluster", cluster.Name)
+	}
+	vcn, err := util.ParseClusterVariableString(cluster, "externalVCNId")
+	if err != nil {
+		r.Log.Error(err, "Cannot extract vcn from cluster", "cluster", cluster.Name)
+	}
+
+	subnet, err := util.ParseClusterVariableString(cluster, "privateServiceSubnetId")
+	if err != nil {
+		r.Log.Error(err, "Cannot extract private subnet from cluster", "cluster", cluster.Name)
+	}
 
 	// convert the CPIConfig CR to data values
 	d := &OracleCPIDataValues{
@@ -145,14 +159,14 @@ func (r *OracleCPIConfigReconciler) reconcileOracleCPIConfig(ctx context.Context
 			Fingerprint: string(fingerprint),
 			Passphrase:  string(passphrase),
 		},
-		Compartment: cpiConfig.Spec.Compartment,
-		VCN:         cpiConfig.Spec.VCN,
+		Compartment: compartment,
+		VCN:         vcn,
 		LoadBalancer: struct {
 			Subnet1 string `yaml:"subnet1"`
 			Subnet2 string `yaml:"subnet2"`
 		}{
-			Subnet1: cpiConfig.Spec.LoadBalancer.Subnet1,
-			Subnet2: cpiConfig.Spec.LoadBalancer.Subnet2,
+			Subnet1: subnet,
+			Subnet2: subnet,
 		},
 	}
 

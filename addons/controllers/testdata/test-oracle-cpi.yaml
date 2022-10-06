@@ -6,18 +6,21 @@ metadata:
 spec:
   infrastructureRef:
     kind: OCICluster
+  topology:
+    version: v1.23.8+vmware.2
+    class: tkg-oci-default
+    variables:
+    - name: compartmentId
+      value: test-compartment
+    - name: externalVCNId
+      value: test-vcn
+    - name: privateServiceSubnetId
+      value: ocid1.subnet.oc1.phx.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 ---
 apiVersion: cpi.tanzu.vmware.com/v1alpha1
 kind: OracleCPIConfig
 metadata:
   name: test-cluster-cpi
-spec:
-  compartment: test-compartment
-  vcn: test-vcn
-  loadBalancer:
-    subnet1: ocid1.subnet.oc1.phx.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    subnet2: ocid1.subnet.oc1.phx.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-    securityListManagementMode: Frontend
 ---
 apiVersion: v1
 kind: Namespace
