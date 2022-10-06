@@ -44,6 +44,12 @@ spec:
         openAPIV3Schema:
           type: string
           default: default
+    - name: privateServiceSubnetId
+      required: false
+      schema:
+        openAPIV3Schema:
+          type: string
+          default: ""
     - name: compartmentId
       required: true
       schema:

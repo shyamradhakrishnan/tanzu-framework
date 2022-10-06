@@ -700,6 +700,9 @@ OCI_IMAGE_ID:
 OCI_COMPARTMENT_ID:
 OCI_SSH_KEY:
 
+#! Settings to provide Oracle CPI subnet information
+OCI_PRIVATE_SERVICE_SUBNET_ID:
+
 #! Settings to use externally managed network infrastructure
 OCI_EXTERNAL_VCN_ID:
 OCI_EXTERNAL_CONTROL_PLANE_EP_NSG_ID:

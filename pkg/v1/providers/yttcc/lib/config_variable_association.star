@@ -855,6 +855,7 @@ def get_oci_vars():
     simpleMapping["OCI_CONTROL_PLANE_MACHINE_TYPE_OCPUS"] = "controlPlaneMachineOcpus"
     simpleMapping["OCI_CONTROL_PLANE_PV_TRANSIT_ENCRYPTION"] = "controlPlanePvTransitEncryption"
 
+    simpleMapping["OCI_PRIVATE_SERVICE_SUBNET_ID"] = "privateServiceSubnetId"
     simpleMapping["OCI_EXTERNAL_VCN_ID"] = "externalVCNId"
     simpleMapping["OCI_EXTERNAL_CONTROL_PLANE_EP_NSG_ID"] = "externalControlPlaneEndpointNSGId"
     simpleMapping["OCI_EXTERNAL_CONTROL_PLANE_NSG_ID"] = "externalControlPlaneNSGId"
